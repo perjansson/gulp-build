@@ -1,0 +1,2 @@
+angular.module("gulpBuildApp").run(["$templateCache", function($templateCache) {$templateCache.put("app/partials/page1.html","This is page 1, click Page 2 to see gulpfile.js");
+$templateCache.put("app/partials/page2.html","This is page 2<pre>{{ vm.gulpFile }}</pre>");}]);

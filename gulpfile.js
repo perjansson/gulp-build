@@ -8,7 +8,9 @@ var gulp = require('gulp'),
   minifyCSS = require('gulp-minify-css'),
   filter = require('gulp-filter'),
   sourcemaps = require('gulp-sourcemaps'),
-  ngAnnotate = require('gulp-ng-annotate');
+  ngAnnotate = require('gulp-ng-annotate'),
+  templateCache = require('gulp-angular-templatecache'),
+  minifyHTML = require('gulp-minify-html');
 
 var scripts = 'app/scripts/**/*.js';
 var styles = 'app/styles/**/*.css';
@@ -18,7 +20,22 @@ var dist_vendor_scripts = 'vendor.min.js';
 var dist_styles = 'styles.min.css';
 var dist_vendor_styles = 'vendor.min.css';
 
-gulp.task('scripts', function() {
+gulp.task('templatecache', function() {
+  return gulp.src('app/partials/**/*.html')
+    .pipe(minifyHTML({
+      quotes: true,
+      conditionals: true,
+      spare: true
+    }))
+    .pipe(templateCache('templates.js', {
+      module: 'gulpBuildApp',
+      root: 'app/partials/',
+      standAlone: false
+    }))
+    .pipe(gulp.dest('app/scripts/templates/'));
+});
+
+gulp.task('scripts', ['templatecache'], function() {
   return gulp.src(scripts)
     .pipe(sourcemaps.init())
     .pipe(concat(dist_scripts))
