@@ -21,9 +21,9 @@ var dist_vendor_styles = 'vendor.min.css';
 gulp.task('scripts', function() {
   return gulp.src(scripts)
     .pipe(sourcemaps.init())
-    //.pipe(uglify())
     .pipe(concat(dist_scripts))
     .pipe(ngAnnotate())
+    .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(dist));
 });
@@ -31,8 +31,8 @@ gulp.task('scripts', function() {
 gulp.task('vendor_scripts', function() {
   return gulp.src(bower())
     .pipe(filter('**/*.js'))
-    //.pipe(uglify())
     .pipe(concat(dist_vendor_scripts))
+    .pipe(uglify())
     .pipe(ngAnnotate())
     .pipe(gulp.dest(dist));
 });
@@ -40,8 +40,8 @@ gulp.task('vendor_scripts', function() {
 gulp.task('styles', function() {
   return gulp.src(styles)
     .pipe(sourcemaps.init())
-    .pipe(minifyCSS())
     .pipe(concat(dist_styles))
+    .pipe(minifyCSS())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(dist));
 });
@@ -49,8 +49,8 @@ gulp.task('styles', function() {
 gulp.task('vendor_styles', function() {
   return gulp.src(bower())
     .pipe(filter('**/*.css'))
-    .pipe(minifyCSS())
     .pipe(concat(dist_vendor_styles))
+    .pipe(minifyCSS())
     .pipe(gulp.dest(dist));
 });
 
