@@ -5,18 +5,29 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
-  minifyCSS = require('gulp-minify-css');
+  minifyCSS = require('gulp-minify-css'),
+  filter = require('gulp-filter');
 
 var scripts = 'app/scripts/**/*.js';
 var styles = 'app/styles/**/*.css';
 var dist = './dist/';
 var dist_scripts = 'scripts.min.js';
+var dist_vendor_scripts = 'vendor.min.js';
 var dist_styles = 'styles.min.css';
+var dist_vendor_styles = 'vendor.min.css';
 
 gulp.task('scripts', function() {
   return gulp.src(scripts)
     .pipe(uglify())
     .pipe(concat(dist_scripts))
+    .pipe(gulp.dest(dist));
+});
+
+gulp.task('vendor_scripts', function() {
+  return gulp.src(bower())
+    .pipe(filter('**/*.js'))
+    .pipe(uglify())
+    .pipe(concat(dist_vendor_scripts))
     .pipe(gulp.dest(dist));
 });
 
@@ -27,10 +38,18 @@ gulp.task('styles', function() {
     .pipe(gulp.dest(dist));
 });
 
-gulp.task('build', ['scripts', 'styles'], function() {
+gulp.task('vendor_styles', function() {
+  return gulp.src(bower())
+    .pipe(filter('**/*.css'))
+    .pipe(minifyCSS())
+    .pipe(concat(dist_vendor_styles))
+    .pipe(gulp.dest(dist));
+});
+
+gulp.task('build', ['scripts', 'vendor_scripts', 'styles', 'vendor_styles'], function() {
   return gulp.src('index.html')
     .pipe(inject(
-      gulp.src(bower(), {
+      gulp.src([dist + dist_vendor_scripts, dist + dist_vendor_styles], {
         read: false
       }), {
         name: 'bower',
