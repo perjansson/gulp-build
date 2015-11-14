@@ -6,7 +6,9 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   minifyCSS = require('gulp-minify-css'),
-  filter = require('gulp-filter');
+  filter = require('gulp-filter'),
+  sourcemaps = require('gulp-sourcemaps'),
+  ngAnnotate = require('gulp-ng-annotate');
 
 var scripts = 'app/scripts/**/*.js';
 var styles = 'app/styles/**/*.css';
@@ -18,23 +20,29 @@ var dist_vendor_styles = 'vendor.min.css';
 
 gulp.task('scripts', function() {
   return gulp.src(scripts)
-    .pipe(uglify())
+    .pipe(sourcemaps.init())
+    //.pipe(uglify())
     .pipe(concat(dist_scripts))
+    .pipe(ngAnnotate())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(dist));
 });
 
 gulp.task('vendor_scripts', function() {
   return gulp.src(bower())
     .pipe(filter('**/*.js'))
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(concat(dist_vendor_scripts))
+    .pipe(ngAnnotate())
     .pipe(gulp.dest(dist));
 });
 
 gulp.task('styles', function() {
   return gulp.src(styles)
+    .pipe(sourcemaps.init())
     .pipe(minifyCSS())
     .pipe(concat(dist_styles))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(dist));
 });
 

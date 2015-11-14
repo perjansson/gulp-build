@@ -1,5 +1,3 @@
-input {
-  width: 100%;
-  font-size: 30px;
+.nav, ui-view, pre {
   margin: 20px 0 20px 0;
 }

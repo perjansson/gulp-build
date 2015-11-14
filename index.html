@@ -25,11 +25,12 @@
 
 <body ng-app="gulpBuildApp">
 
-  <div class="row">
-    <div class="col-xs-12 col-sm-10 col-sm-offset-1 text-center">
-      <input type="text" ng-model="input" />
-      <pre>{{ input | json }}</pre>
-    </div>
+  <div class="container">
+    <ul class="nav nav-tabs">
+      <li role="presentation" ui-sref-active="active"><a ui-sref="page1">Page 1</a></li>
+      <li role="presentation" ui-sref-active="active"><a ui-sref="page2">Page 2</a></li>
+    </ul>
+    <div ui-view></div>
   </div>
 
 </body>
