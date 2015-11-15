@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.css"],"names":[],"mappings":"AAAA,KAAA,IAAA,QACA,OAAA,KAAA","file":"styles.min.css","sourcesContent":[".nav, ui-view, pre {\n  margin: 20px 0 20px 0;\n}\n"],"sourceRoot":"/source/"}
