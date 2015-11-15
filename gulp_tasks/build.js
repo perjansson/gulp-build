@@ -5,6 +5,8 @@ var gulp = require('gulp'),
   uglify = require('gulp-uglify'),
   minifyCSS = require('gulp-minify-css'),
   filter = require('gulp-filter'),
+  gulpif = require('gulp-if'),
+  path = require('path'),
   sourcemaps = require('gulp-sourcemaps'),
   ngAnnotate = require('gulp-ng-annotate'),
   rev = require('gulp-rev'),
@@ -47,7 +49,7 @@ gulp.task('build-vendor-scripts', function() {
     .pipe(filter('**/*.js'))
     .pipe(concat(config.dist_vendor_scripts))
     .pipe(ngAnnotate())
-    .pipe(uglify())
+    .pipe(gulpif(isNotMinified, uglify()))
     .pipe(rev())
     .pipe(gulp.dest(config.dist))
     .pipe(rev.manifest())
@@ -59,10 +61,19 @@ gulp.task('build-vendor-styles', function() {
   return gulp.src(bower())
     .pipe(filter('**/*.css'))
     .pipe(concat(config.dist_vendor_styles))
-    .pipe(minifyCSS())
+    .pipe(gulpif(isNotMinified, minifyCSS()))
     .pipe(rev())
     .pipe(gulp.dest(config.dist))
     .pipe(rev.manifest())
     .pipe(rename(config.rev_manifest_vendor_styles))
     .pipe(gulp.dest(config.dist));
 });
+
+var isNotMinified = function(file) {
+  var extname = path.extname(file.path);
+  if (extname === '.js' || extname === '.css') {
+    return path.extname(file.path.substr(0, file.path.length - extname.length)) !== '.min';
+  } else {
+    return false;
+  }
+};
