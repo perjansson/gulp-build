@@ -1,6 +1,10 @@
+var argv = require('yargs').argv;
+
 module.exports = function() {
 
   var config = {
+    production: argv.production,
+
     scripts: 'app/scripts/**/*.js',
     styles: 'app/styles/**/*.css',
 
